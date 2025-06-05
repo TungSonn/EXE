@@ -85,6 +85,11 @@ app.head("/", (req, res) => {
   res.status(200).end();
 });
 
+// Add GET route handler for root path
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server is running" });
+});
+
 // Serve static files (for locally stored images)
 // Configure this only if you are saving images locally as implemented in vehicleController
 app.use(
