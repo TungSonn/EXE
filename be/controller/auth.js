@@ -281,7 +281,7 @@ exports.googleCallback = async (req, res) => {
 
     generateTokenAndSetCookie(user, res);
 
-    const redirectUrl = `${process.env.CLIENT_ORIGIN}/homepage`;
+    const redirectUrl = `${process.env.CLIENT_ORIGIN}/`;
     console.log("Redirecting to homepage after Google auth:", redirectUrl);
     res.redirect(redirectUrl);
   } catch (err) {
