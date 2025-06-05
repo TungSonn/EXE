@@ -80,6 +80,11 @@ app.get("/hello", (req, res) => {
   res.send("Hello World");
 });
 
+// Add HEAD route handler for root path
+app.head("/", (req, res) => {
+  res.status(200).end();
+});
+
 // Serve static files (for locally stored images)
 // Configure this only if you are saving images locally as implemented in vehicleController
 app.use(
