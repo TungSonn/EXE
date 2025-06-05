@@ -34,7 +34,7 @@ const Profile = () => {
   const handleUpdateName = async (newName) => {
     setMessage(null);
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:4999'}/api/user/update-profile`, {
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/update-profile`, {
         name: newName
       }, {
         withCredentials: true
@@ -193,7 +193,7 @@ const Profile = () => {
         onClose={() => setShowEmailPopup(false)}
         onUpdateEmail={async (newEmail) => {
           try {
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:4999'}/api/user/update-email`, { email: newEmail }, { withCredentials: true });
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/update-email`, { email: newEmail }, { withCredentials: true });
             if (response.data.requiresVerification) {
               setShowEmailPopup(false);
               setShowVerifyEmailPopup(true);
@@ -215,7 +215,7 @@ const Profile = () => {
         onClose={() => setShowPhonePopup(false)}
         onUpdatePhone={async (newPhone) => {
           try {
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:4999'}/api/user/update-phone`, { phone: newPhone }, { withCredentials: true });
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/update-phone`, { phone: newPhone }, { withCredentials: true });
             if (response.data.requiresVerification) {
               setShowPhonePopup(false);
               setShowVerifyPhonePopup(true);
@@ -244,7 +244,7 @@ const Profile = () => {
         onClose={() => setShowVerifyEmailPopup(false)}
         onVerifyOtp={async (otp) => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:4999'}/api/user/verify-email-otp`, { otp }, { withCredentials: true });
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/verify-email-otp`, { otp }, { withCredentials: true });
             fetchUserProfile();
             setShowVerifyEmailPopup(false);
             setMessage(response.data.message || 'Email xác minh thành công!');
@@ -254,7 +254,7 @@ const Profile = () => {
         }}
         onResendOtp={async () => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:4999'}/api/user/resend-email-otp`, {}, { withCredentials: true });
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/resend-email-otp`, {}, { withCredentials: true });
             setMessage(response.data.message || 'Mã OTP mới đã được gửi.');
           } catch (error) {
             setMessage(error.response?.data?.message || 'Gửi lại mã OTP thất bại.');
@@ -267,7 +267,7 @@ const Profile = () => {
         onClose={() => setShowVerifyPhonePopup(false)}
         onVerifyOtp={async (otp) => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:4999'}/api/user/verify-phone-otp`, { otp }, { withCredentials: true });
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/verify-phone-otp`, { otp }, { withCredentials: true });
             fetchUserProfile();
             setShowVerifyPhonePopup(false);
             setMessage(response.data.message || 'Xác minh số điện thoại thành công!');
