@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import AvatarPopup from './AvatarPopup';
 import './Profile.css';
-import { FaExclamationCircle, FaPencilAlt, FaCheckCircle, FaUser } from 'react-icons/fa';
+import { FaExclamationCircle, FaPencilAlt, FaCheckCircle } from 'react-icons/fa';
 import UpdateEmailPopup from './UpdateEmailPopup';
 import UpdatePhonePopup from './UpdatePhonePopup';
 import VerifyEmailPopup from './VerifyEmailPopup';

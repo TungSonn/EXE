@@ -20,7 +20,7 @@ const OwnerRouteGuard = ({ children }) => {
     // Check if authenticated AND user exists AND user has role 'owner' AND owner_request_owner_status is 'approved'
     const isApprovedOwner = isAuthenticated && user && 
                             user.role && user.role.includes('owner') && 
-                            user.owner_request_status == 'approved';
+                            user.owner_request_status === 'approved';
 
                             
     if (isApprovedOwner) {

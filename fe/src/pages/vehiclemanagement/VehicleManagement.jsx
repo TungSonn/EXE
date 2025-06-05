@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './VehicleManagement.css'
-import AddCarForm from './AddCarForm';
-import AddMotorbikeForm from './AddMotorbikeForm';
-import axios from 'axios';
-import EditCarForm from './EditCarForm';
-import EditMotorbikeForm from './EditMotorbikeForm';
 import SidebarOwner from '../../components/SidebarOwner/SidebarOwner';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const VehicleManagement = () => {
     const navigate = useNavigate();

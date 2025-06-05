@@ -130,7 +130,6 @@ const AddCarForm = ({ onSuccess }) => {
     // Giải phóng URL của ảnh cũ để tránh rò rỉ bộ nhớ
     additionalImagesPreviews.forEach((url) => URL.revokeObjectURL(url));
 
-
     const newPreviews = formData.additional_images.map((file) =>
       URL.createObjectURL(file)
     );

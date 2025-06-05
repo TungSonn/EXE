@@ -63,10 +63,10 @@ const SidebarOwner = ({ handleLogout }) => {
                     </li>
                     <li className="divider"></li>
                     <li>
-                        <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); handleLogout(e); }}>
+                        <button className="nav-link" onClick={handleLogout} style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
                             <MdLogout />
                             Logout
-                        </a>
+                        </button>
                     </li>
                     <li className="divider"></li>
                 </ul>
