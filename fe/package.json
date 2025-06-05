@@ -21,9 +21,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run copy-redirects",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "copy-redirects": "copyfiles -u 1 public/_redirects build"
   },
   "eslintConfig": {
     "extends": [

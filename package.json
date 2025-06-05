@@ -1,9 +1,5 @@
 {
   "devDependencies": {
     "copyfiles": "^2.4.1"
-  },
-  "scripts": {
-    "build": "react-scripts build && npm run copy-redirects",
-    "copy-redirects": "copyfiles -u 1 public/_redirects build"
   }
 }
