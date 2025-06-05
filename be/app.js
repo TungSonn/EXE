@@ -50,6 +50,12 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
   connectTimeoutMS: 10000,
   socketTimeoutMS: 10000,
+  ssl: true,
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+  tlsAllowInvalidHostnames: false,
+  retryWrites: true,
+  w: 'majority'
 });
 
 // Check connection events directly on mongoose.connection
