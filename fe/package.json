@@ -43,5 +43,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:4999"
+  "proxy": "http://localhost:4999",
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
+  }
 }
