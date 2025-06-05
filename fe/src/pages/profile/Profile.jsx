@@ -26,10 +26,10 @@ const Profile = () => {
   const [phoneUpdateErrorMessage, setPhoneUpdateErrorMessage] = useState(null);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isLoading && !user) {
       navigate('/login');
     }
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isLoading, user, navigate]);
 
   const handleUpdateName = async (newName) => {
     setMessage(null);
@@ -80,7 +80,8 @@ const Profile = () => {
     return new Date(String(date)).toLocaleDateString('vi-VN');
   };
 
-  if (isLoading || !user) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (!user) return null;
 
   return (
     <>
