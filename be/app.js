@@ -1,110 +1,101 @@
-  const express = require("express");
-  const mongoose = require("mongoose");
-  const bodyParser = require("body-parser");
-  const cors = require("cors");
-  require("dotenv").config(); // phải là dòng đầu tiên!
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+require("dotenv").config();
 
-  const path = require("path");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
+const passport = require("passport");
+require("./auth/auth");
 
-  const cookieParser = require("cookie-parser");
-  const morgan = require("morgan");
-  const passport = require("passport");
-  require("./auth/auth");
+//routes
+const authRoutes = require("./route/auth");
+const userRoutes = require("./route/userRoutes");
+const vehicleRoutes = require("./route/vehicleRoutes");
+const ownerRoutes = require("./route/ownerRoutes");
+const adminRoutes = require("./route/adminRoutes");
+const carRoutes = require("./route/carRoutes");
 
-  //routes
-  const authRoutes = require("./route/auth");
-  const userRoutes = require("./route/userRoutes");
-  const vehicleRoutes = require("./route/vehicleRoutes");
-  const ownerRoutes = require("./route/ownerRoutes");
-  const adminRoutes = require("./route/adminRoutes");
-  const carRoutes = require("./route/carRoutes");
+const app = express();
 
-  const app = express();
+// Basic middleware setup
+app.use(morgan("dev")); // Logging middleware
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.use(cookieParser());
+// CORS configuration
+const PORT = process.env.PORT || 4999;
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:3000";
+app.use(
+  cors({
+    origin: CLIENT_ORIGIN,
+    credentials: true,
+  })
+);
 
-  // Lấy PORT và origin từ biến môi trường
-  const PORT = process.env.PORT || 4999;
-  const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:3000";
+// Root path handlers - place these before other routes
+app.get("/", (req, res) => {
+  console.log("GET / was called");
+  res.status(200).json({ message: "Server is running" });
+});
 
-  // Cấu hình CORS
-  app.use(
-    cors({
-      origin: CLIENT_ORIGIN,
-      credentials: true,
-    })
-  );
+app.head("/", (req, res) => {
+  console.log("HEAD / was called");
+  res.status(200).end();
+});
 
-  app.use(morgan("dev"));
+// Static file serving
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads/vehicles",
+  express.static(path.join(__dirname, "uploads", "vehicles"))
+);
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+// API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/owner", ownerRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/cars", carRoutes);
 
-  app.use(passport.initialize());
+// Test route
+app.get("/hello", (req, res) => {
+  res.send("Hello World");
+});
 
-  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Error handling middleware - should be last
+app.use((err, req, res, next) => {
+  console.error("Error occurred:", err);
+  res.status(500).json({ message: "Something broke!", error: err.message });
+});
 
-  // Mongoose Connection (Centralized here)
-  mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    connectTimeoutMS: 10000,
-    socketTimeoutMS: 10000,
-    ssl: true,
-    tls: true,
-    tlsAllowInvalidCertificates: false,
-    tlsAllowInvalidHostnames: false,
-    retryWrites: true,
-    w: 'majority'
-  });
+// 404 handler - should be after all routes but before error handler
+app.use((req, res) => {
+  console.log("404 Not Found:", req.method, req.url);
+  res.status(404).json({ message: "Route not found" });
+});
 
-  // Check connection events directly on mongoose.connection
-  mongoose.connection.on(
-    "error",
-    console.error.bind(console, "MongoDB connection error:")
-  );
-  mongoose.connection.once("open", function () {
-    console.log("MongoDB connected successfully");
-  });
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 10000,
+  ssl: true,
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+  tlsAllowInvalidHostnames: false,
+  retryWrites: true,
+  w: 'majority'
+}).then(() => {
+  console.log("MongoDB connected successfully");
+}).catch((err) => {
+  console.error("MongoDB connection error:", err);
+});
 
-  // Routes
-
-  app.use("/api/auth", authRoutes);
-  app.use("/api/user", userRoutes);
-  app.use("/api/vehicles", vehicleRoutes);
-  app.use("/api/owner", ownerRoutes);
-  app.use("/api/admin", adminRoutes);
-  app.use("/api/cars", carRoutes);
-
-  app.get("/hello", (req, res) => {
-    res.send("Hello World");
-  });
-
-  // Add HEAD route handler for root path
-  app.head("/", (req, res) => {
-    res.status(200).end();
-  });
-
-  // Add GET route handler for root path
-  app.get("/", (req, res) => {
-    console.log("GET / was called");
-    res.status(200).json({ message: "Server is running" });
-  });
-  
-
-  // Serve static files (for locally stored images)
-  // Configure this only if you are saving images locally as implemented in vehicleController
-  app.use(
-    "/uploads/vehicles",
-    express.static(path.join(__dirname, "uploads", "vehicles"))
-  );
-
-  // Basic error handling
-  app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send("Something broke!");
-  });
-
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
