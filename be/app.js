@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS configuration
 const PORT = process.env.PORT || 4999;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "https://exe-j3j8.onrender.com";
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "https://exe-aewq.onrender.com";
 app.use(
   cors({
     origin: CLIENT_ORIGIN,
