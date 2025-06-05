@@ -61,11 +61,14 @@ const Profile = () => {
     try {
       const formData = new FormData();
       formData.append('avatar', file);
-      const response = await fetch('/api/user/update-avatar', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL || 'https://exe-be-rmei.onrender.com'}/api/user/update-avatar`,
+        {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        }
+      );
       if (!response.ok) throw new Error('Avatar update failed');
       setShowAvatarPopup(false);
       setMessage('Avatar updated successfully!');
