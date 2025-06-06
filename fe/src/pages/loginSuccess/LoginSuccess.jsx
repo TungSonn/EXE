@@ -27,15 +27,17 @@ const LoginSuccess = () => {
       // If not loading (AuthContext has finished fetching user) and no password needed
       if (user) {
         // User data is available
-        const userRole = user.role;
+        const userRoles = user.role;
         let redirectPath = '/homepage'; // Default redirect
 
-        if (userRole === 'owner') {
+        if (Array.isArray(userRoles)) {
+          if (userRoles.includes('admin')) redirectPath = '/adminDashboard';
+          else if (userRoles.includes('owner')) redirectPath = '/ownerpage';
+        } else if (userRoles === 'admin') {
+          redirectPath = '/adminDashboard';
+        } else if (userRoles === 'owner') {
           redirectPath = '/ownerpage';
-        } else if (userRole === 'admin') {
-          redirectPath = '/adminpage'; // Assuming admin page
         }
-        // Add more roles if needed
 
         setDisplayMessage(`Đăng nhập Google thành công! Đang chuyển hướng đến ${redirectPath}...`);
         const redirectTimer = setTimeout(() => {
