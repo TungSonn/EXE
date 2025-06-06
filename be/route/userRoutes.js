@@ -4,6 +4,7 @@ const userController = require("../controller/userController");
 const { protect } = require("../middleware/authMiddleware");
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() }); // Lưu file vào RAM, không lưu ổ cứng
+const { grantAdmin } = require("../controller/userController");
 
 router.get("/profile", protect, userController.getProfile);
 router.post('/forgot-password', userController.forgotPassword);
@@ -24,5 +25,7 @@ router.put('/update-phone', protect, userController.updatePhone); // Link to a f
 
 // New route for changing password
 router.put('/change-password', protect, userController.changePassword); // Link to a future changePassword controller function
+
+router.post('/grant-admin', grantAdmin); // [DEV ONLY]
 
 module.exports = router;

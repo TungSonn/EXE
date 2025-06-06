@@ -606,3 +606,20 @@ exports.changePassword = async (req, res) => {
         res.status(500).json({ message: 'Đã xảy ra lỗi khi đổi mật khẩu.' });
     }
 };
+
+// [DEV ONLY] Endpoint để cấp quyền admin cho user qua email
+exports.grantAdmin = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: 'Email là bắt buộc.' });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'Không tìm thấy user.' });
+    if (!user.role.includes('admin')) {
+      user.role.push('admin');
+      await user.save();
+    }
+    res.json({ message: 'Đã cấp quyền admin cho user.', user });
+  } catch (err) {
+    res.status(500).json({ message: 'Lỗi server khi cấp quyền admin.' });
+  }
+};
