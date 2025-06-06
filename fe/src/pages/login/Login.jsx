@@ -43,12 +43,16 @@ const Login = () => {
       setMessage(response.data.message || 'Đăng nhập thành công!');
       setIsError(false);
 
-
-      const userRole = response.data.user?.role;
-      console.log(userRole);
+      const userRoles = response.data.user?.role;
       let redirectPath = '/homepage';
-      if (userRole === 'owner') redirectPath = '/ownerpage';
-      else if (userRole === 'admin') redirectPath = '/adminDashboard';
+      if (Array.isArray(userRoles)) {
+        if (userRoles.includes('admin')) redirectPath = '/adminDashboard';
+        else if (userRoles.includes('owner')) redirectPath = '/ownerpage';
+      } else if (userRoles === 'admin') {
+        redirectPath = '/adminDashboard';
+      } else if (userRoles === 'owner') {
+        redirectPath = '/ownerpage';
+      }
 
       // Delay một chút để hiển thị thông báo
       setTimeout(() => navigate(redirectPath), 1000);
